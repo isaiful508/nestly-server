@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
-import QueryBuilder from "../../../builder/QueryBuilder";
-import { RentalHouseSearchableFields } from "./listing.constant";
+
 import { IRentalHouse } from "./listing.interface";
 import { RentalHouse } from "./listing.model";
 
@@ -10,23 +8,23 @@ const createRentalHouseIntoDB = async (payload: IRentalHouse) => {
   return result;
 };
 
-const getAllRentalHousesFromDB = async (
-  query: Record<string, unknown>,
-  landlordId: string
-) => {
-    const landlordObjectId = new mongoose.Types.ObjectId(landlordId);
+// const getAllRentalHousesFromDB = async (
+//   query: Record<string, unknown>,
+//   // landlordId: string
+// ) => {
+//     // const landlordObjectId = new mongoose.Types.ObjectId(landlordId);
 
-  const rentalQuery = new QueryBuilder(
-    RentalHouse.find({ landlord: landlordObjectId }),
-    query
-  )
-    .search(RentalHouseSearchableFields)
-    .filter()
-    .sort();
+//   const rentalQuery = new QueryBuilder(
+//     RentalHouse.find({ landlord: landlordObjectId }),
+//     query
+//   )
+//     .search(RentalHouseSearchableFields)
+//     .filter()
+//     .sort();
 
-  const result = await rentalQuery.modelQuery.select('-__v').lean();
-  return result;
-};
+//   const result = await rentalQuery.modelQuery.select('-__v').lean();
+//   return result;
+// };
 
 const updateRentalHouseIntoDB = async (
   id: string,
@@ -76,7 +74,7 @@ const deleteRentalHouseFromDB = async (id: string) => {
 
 export const RentalHouseService = {
   createRentalHouseIntoDB,
-  getAllRentalHousesFromDB,
+  // getAllRentalHousesFromDB,
   updateRentalHouseIntoDB,
   deleteRentalHouseFromDB,
 //   getAllRentalRequestsForLandlord,
