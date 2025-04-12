@@ -1,8 +1,6 @@
 import User from './user.model';
 import { IUser } from './user.interface';
-import { hashPassword, comparePassword } from './user.utils';
-import { StatusCodes } from 'http-status-codes';
-import { Types } from 'mongoose';
+import { comparePassword, hashPassword } from './user.utils';
 
 const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
   const { name, email, password, phoneNumber, role } = data;
@@ -19,21 +17,27 @@ const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
   return await user.save();
 };
 
-// export const loginUser = async (email: string, password: string): Promise<IUser | null> => {
-//   const user = await User.findOne({ email });
-//   if (!user || !(await comparePassword(password, user.password))) {
-//     return null;
-//   }
-//   // Check if the user is deactivated
-//   if (user.isActive === false) {
-//     throw {
-//       statusCode: StatusCodes.FORBIDDEN,
-//       message: "User is deactivated",
-//       error: { details: "This account has been deactivated. Please contact support." },
-//     };
-//   }
-//   return user;
-// };
+export const loginUserFromDB = async (identifier: string, password: string) => {
+  // Find by email or username
+  const user = await User.findOne({
+    $or: [{ email: identifier }, { name: identifier }],
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const isPasswordMatch = await comparePassword(password, user.password);
+  if (!isPasswordMatch) {
+    throw new Error('Invalid credentials');
+  }
+
+  if (!isPasswordMatch) {
+    throw new Error('Invalid credentials');
+  }
+
+  return user;
+};
 
 // const getAllUsers = async () => {
 //   const result = await User.find()
@@ -70,4 +74,5 @@ const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
 
 export const UserServices = {
   registerUserIntoDB,
+  loginUserFromDB
 }

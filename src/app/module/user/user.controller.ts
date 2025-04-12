@@ -6,8 +6,6 @@ import catchAsync from '../../utils/catchAsync';
 
 import { UserServices } from './user.server';
 import { loginValidationSchema, registerValidationSchema } from './user.validation';
-import { hashPassword } from './user.utils';
-import bcrypt from 'bcrypt';
 import { sendResponse } from '../../utils/sendResponse';
 
 
@@ -29,35 +27,43 @@ const registerUser = catchAsync(async (req, res) => {
 
 
 
-// export const loginUser = catchAsync(async (req, res) => {
-//   const validatedData = loginValidationSchema.parse(req.body);
-//   const user = await UserServices.loginUser(validatedData.email, validatedData.password);
-//   if (!user) {
-//     throw {
-//       statusCode: StatusCodes.UNAUTHORIZED,
-//       message: "User not found",
-//       error: { details: "Email or password did not match" },
-//     };
-//   }
+export const loginUser = catchAsync(async (req, res) => {
+  const validatedData = loginValidationSchema.parse(req.body);
+    const identifier = validatedData.email || validatedData.username;
+
+    if (!identifier) {
+      throw {
+        statusCode: StatusCodes.BAD_REQUEST,
+        message: 'Email or username is required',
+        error: { details: 'Please provide either email or username' },
+      };
+    }
+  
+    const user = await UserServices.loginUserFromDB(identifier, validatedData.password);
+  if (!user) {
+    throw {
+      statusCode: StatusCodes.UNAUTHORIZED,
+      message: "User not found",
+      error: { details: "Email or password did not match" },
+    };
+  }
 
 
-//   const token = jwt.sign({ 
-//     id: user._id,
-//     email : user.email,
-//     name : user.name,
-//     role: user.role,
-//     phone : user.phone,
-//     address : user.address,
-//     city : user.city,
-//   }, JWT_SECRET, { expiresIn: '24h' });
+  const token = jwt.sign({ 
+    id: user._id,
+    email : user.email,
+    name : user.name,
+    role: user.role,
+    phone : user.phoneNumber,
+  }, JWT_SECRET, { expiresIn: '24h' });
 
-//   sendResponse(res, {
-//     statusCode: StatusCodes.OK,
-//     success: true,
-//     message: 'Login successful',
-//     data: { token },
-//   });
-// });
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Login successful',
+    data: { token },
+  });
+});
 
 
 // const getAllUsers = catchAsync(async (req, res) => {
@@ -136,4 +142,5 @@ const registerUser = catchAsync(async (req, res) => {
 
 export const UserControllers = {
   registerUser,
+  loginUser
 };

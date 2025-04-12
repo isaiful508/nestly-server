@@ -29,3 +29,12 @@ export const registerValidationSchema = z
       path: ['confirmPassword'],
     }
   );
+
+  export const loginValidationSchema = z.object({
+    email: z.string().email('Invalid email address').optional(),
+    username: z.string().min(1, 'Username is required').optional(),
+    password: z.string().min(1, 'Password is required'),
+  }).refine(data => data.email || data.username, {
+    message: 'Either email or username is required',
+    path: ['email', 'username'],
+  });
