@@ -1,8 +1,9 @@
-import { model, Schema } from "mongoose";
+import { model, Schema,  } from "mongoose";
 import { IRentalHouse, RentalHouseModel } from "./listing.interface";
 
 export const rentalHouseSchema = new Schema<IRentalHouse>(
     {
+        
       location:{
         type: String,
         required: true,
@@ -27,14 +28,15 @@ export const rentalHouseSchema = new Schema<IRentalHouse>(
          type: [String],
          required: true
       },
-      landlordId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',// Reference to the Users collection
-        required: true
-      },
+     
       available: {
         type: Boolean,
         default: true,
+      },
+      landlord: {
+        type: Schema.Types.ObjectId,
+        ref: "User", 
+        required: true,
       },
     },
     {
