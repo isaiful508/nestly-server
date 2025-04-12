@@ -5,7 +5,7 @@ import catchAsync from "../utils/catchAsync";
 import AppError from "../errors/AppError";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
-import { UserModel } from "../modules/auth/auth.model";
+import User from "../module/user/user.model";
 
 const auth = (...requiredRoles: TUserRole[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +15,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
         }
         let decode;
         try {
-            decode = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+            decode = jwt.verify(token, config.jwt_secret as string) as JwtPayload;
         } catch (err) {
             throw new AppError(401, "You are not authorized.");
         }
@@ -26,7 +26,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
             throw new AppError(401, "You are not authorized.");
         }
 
-        const user = await UserModel.findOne({ email: decode.email });
+        const user = await User.findOne({ email: decode.email });
 
         if (!user) {
             throw new AppError(401, "This user in not found!");
