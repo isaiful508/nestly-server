@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import cors from 'cors';
 import router from "./app/routers";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
-import { UserRoutes } from "./app/module/user/user.route";
 
 const app = express();
 
@@ -15,7 +14,7 @@ app.use(cors({
 }));
 
 
-app.use('/api', UserRoutes);
+app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send({ message: 'Alhamdulilah Server is running....' });

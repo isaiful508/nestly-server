@@ -4,10 +4,10 @@ import { comparePassword, generateUniqueUsername, hashPassword } from './user.ut
 
 const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
   const { name, email, password, phoneNumber, role } = data;
-// Generate a unique username
-const username = await generateUniqueUsername(name);
+  // Generate a unique username
+  const username = await generateUniqueUsername(name as string);
   const hashedPassword = await hashPassword(password!);
-console.log({username});
+  console.log({ username });
   const user = new User({
     name,
     username,
