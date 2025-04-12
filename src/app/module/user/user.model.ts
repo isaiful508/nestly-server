@@ -7,6 +7,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, 'Name is required'],
     },
+
     email: {
       type: String,
       required: [true, 'Email is required'],
@@ -14,18 +15,27 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
     },
+
     phoneNumber: {
       type: String,
       required: [true, 'Phone number is required'],
     },
+
     password: {
       type: String,
       required: [true, 'Password is required'],
     },
+
     role: {
       type: String,
       enum: ['admin', 'landlord', 'tenant'],
       required: [true, 'Role is required'],
+    },
+
+    username: {
+      type: String,
+      required: true,
+      unique: true,
     },
   },
   {

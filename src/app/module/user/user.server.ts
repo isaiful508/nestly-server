@@ -1,14 +1,16 @@
 import User from './user.model';
 import { IUser } from './user.interface';
-import { comparePassword, hashPassword } from './user.utils';
+import { comparePassword, generateUniqueUsername, hashPassword } from './user.utils';
 
 const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
   const { name, email, password, phoneNumber, role } = data;
-
+// Generate a unique username
+const username = await generateUniqueUsername(name);
   const hashedPassword = await hashPassword(password!);
-
+console.log({username});
   const user = new User({
     name,
+    username,
     email,
     phoneNumber,
     password: hashedPassword,
@@ -18,9 +20,8 @@ const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
 };
 
 export const loginUserFromDB = async (identifier: string, password: string) => {
-  // Find by email or username
   const user = await User.findOne({
-    $or: [{ email: identifier }, { name: identifier }],
+    $or: [{ email: identifier }, { username: identifier }],
   });
 
   if (!user) {
