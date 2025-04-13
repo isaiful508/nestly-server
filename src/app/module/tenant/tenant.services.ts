@@ -1,9 +1,8 @@
 import { JwtPayload } from "jsonwebtoken";
 import { TTenantRequest } from "./tenant.interface";
 import TenantRequest from "./tenant.model";
-
+import User from "../user/user.model";
 const createTenantRequest = async (payload: TTenantRequest, user: JwtPayload) => {
-    console.log({user});
     const tenantRequest = await TenantRequest.create({
         ...payload,
         tenantId: user.id
@@ -11,6 +10,22 @@ const createTenantRequest = async (payload: TTenantRequest, user: JwtPayload) =>
     return tenantRequest;
 }
 
+const getAllTenantRequest = async (user: JwtPayload) => {
+    console.log({user});
+    const tenantRequest = await TenantRequest.find({    
+        tenantId: user.id
+    });
+    return tenantRequest;
+}
+
+const updateTenantProfile = async (payload: TTenantRequest, user: JwtPayload) => {
+    console.log({payload, user});
+    const tenantRequest = await User.findByIdAndUpdate(user.id, payload, {new: true});
+    return tenantRequest;
+}
+
 export const TenantServices = {
-    createTenantRequest
+    createTenantRequest,
+    getAllTenantRequest,
+    updateTenantProfile
 }   
