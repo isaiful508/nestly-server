@@ -54,7 +54,7 @@ const getAllRentalRequestsForLandlord = async (landlordId: string) => {
   const listingIds = listings.map((house) => house._id);
 
   // Step 2: Get landlord's phone number from the User collection
-  const landlord = await User.findById(landlordId).select('phone').lean();
+  const landlord = await User.findById(landlordId).select('phoneNumber').lean();
   if (!landlord || !landlord.phoneNumber) {
     throw new Error("Landlord's phone number not found.");
   }
