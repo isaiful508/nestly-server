@@ -1,7 +1,7 @@
 export const USER_ROLE = {
-    // professional: "professional",
-    // employer: "employer",
-    // admin: "admin",
+    LANDLORD: "landlord",
+    TENANT: "tenant",
+    ADMIN: "admin",
 } as const;
 
 export type TUserRole = keyof typeof USER_ROLE;
