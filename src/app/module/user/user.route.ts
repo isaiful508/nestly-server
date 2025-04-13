@@ -6,10 +6,10 @@ import { UserControllers } from './user.controller';
 const router = express.Router();
 
 router.post(
-    '/auth/register',
+    '/register',
     UserControllers.registerUser);
 router.post(
-    '/auth/login',
+    '/login',
     UserControllers.loginUser);
 
 export const UserRoutes = router;

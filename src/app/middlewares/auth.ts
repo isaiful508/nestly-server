@@ -22,7 +22,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
         // console.log("Token User", decode);
         const role = decode.role;
 
-        if (requiredRoles && !requiredRoles.includes(role)) {
+        if (requiredRoles && !requiredRoles.includes(role as TUserRole)) {
             throw new AppError(401, "You are not authorized.");
         }
 
