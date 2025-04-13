@@ -1,11 +1,11 @@
-import { z } from 'zod';
+  import { z } from 'zod';
 
 export const registerValidationSchema = z
   .object({
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email('Invalid email'),
-    phoneNumber: z.string().min(10, 'Phone number is required'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
+    name: z.string({required_error: "Name is required"}).min(1, 'Name is required'),
+    email: z.string({required_error: "Email is required"}).email('Invalid email'),
+    phoneNumber: z.string({required_error: "Phone number is required"}).min(10, 'Phone number is required'),
+    password: z.string({required_error: "Password is required"}).min(6, 'Password must be at least 6 characters'),
     confirmPassword: z
       .string()
       .min(6, 'Confirm Password must be at least 6 characters')
