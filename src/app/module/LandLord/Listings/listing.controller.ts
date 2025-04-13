@@ -19,22 +19,23 @@ export const createRentalHouse = catchAsync(async (req: Request, res: Response) 
 });
 
 // Get all rental houses for a landlord with query support
-// export const getAllRentalHouses = catchAsync(async (req: Request, res: Response) => {
-//   // const landlordId = req; 
-//   const query = req.query;
+export const getAllRentalHouses = catchAsync(async (req: Request, res: Response) => {
+  console.log("check......",req);
+   const landlordId = req?.user.id; 
+  const query = req.query;
 
-//   const result = await RentalHouseService.getAllRentalHousesFromDB(
-//     query,
-//     // landlordId
-//   );
+  const result = await RentalHouseService.getAllRentalHousesFromDB(
+    query,
+     landlordId
+  );
 
-//   sendResponse(res, {
-//     statusCode:StatusCodes.OK,
-//     success: true,
-//     message: "Rental houses retrieved successfully",
-//     data: result,
-//   });
-// });
+  sendResponse(res, {
+    statusCode:StatusCodes.OK,
+    success: true,
+    message: "Rental houses retrieved successfully",
+    data: result,
+  });
+});
 
 // Update rental house
 export const updateRentalHouse = catchAsync(async (req: Request, res: Response) => {
