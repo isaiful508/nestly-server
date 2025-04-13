@@ -19,22 +19,23 @@ export const createRentalHouse = catchAsync(async (req: Request, res: Response) 
 });
 
 // Get all rental houses for a landlord with query support
-// export const getAllRentalHouses = catchAsync(async (req: Request, res: Response) => {
-//   // const landlordId = req; 
-//   const query = req.query;
+export const getAllRentalHouses = catchAsync(async (req: Request, res: Response) => {
+  console.log("check......",req);
+   const landlordId = req?.user.id; 
+  const query = req.query;
 
-//   const result = await RentalHouseService.getAllRentalHousesFromDB(
-//     query,
-//     // landlordId
-//   );
+  const result = await RentalHouseService.getAllRentalHousesFromDB(
+    query,
+     landlordId
+  );
 
-//   sendResponse(res, {
-//     statusCode:StatusCodes.OK,
-//     success: true,
-//     message: "Rental houses retrieved successfully",
-//     data: result,
-//   });
-// });
+  sendResponse(res, {
+    statusCode:StatusCodes.OK,
+    success: true,
+    message: "Rental houses retrieved successfully",
+    data: result,
+  });
+});
 
 // Update rental house
 export const updateRentalHouse = catchAsync(async (req: Request, res: Response) => {
@@ -61,6 +62,34 @@ export const deleteRentalHouse = catchAsync(async (req: Request, res: Response) 
     statusCode: StatusCodes.OK,
     success: true,
     message: "Rental house deleted successfully",
+    data: result,
+  });
+});
+
+export const getAllRentalRequests = catchAsync(async (req: Request, res: Response) => {
+  const landlordId = req?.user?.id;
+
+  const result = await RentalHouseService.getAllRentalRequestsForLandlord(landlordId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Rental requests retrieved successfully",
+    data: result,
+  });
+});
+
+// Respond to a rental request
+export const handleRentalRequestResponse = catchAsync(async (req: Request, res: Response) => {
+  const { requestId } = req.params;
+  const { status, phoneNumber } = req.body;
+
+  const result = await RentalHouseService.respondToRentalRequest(requestId, status, phoneNumber);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: `Rental request ${status} successfully`,
     data: result,
   });
 });
