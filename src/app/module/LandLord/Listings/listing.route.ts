@@ -10,8 +10,8 @@ router.post("/listings",
     validateRequest(createRentalHouseValidationSchema),
     createRentalHouse,
 )
-router.get("/listings", auth(USER_ROLE.landlord ), getAllRentalHouses);
-router.patch('/:id',
+router.get("/listings", auth(USER_ROLE.LANDLORD), getAllRentalHouses);
+router.put('/listings/:id',
     validateRequest(updateRentalHouseValidationSchema),
     updateRentalHouse,
 )

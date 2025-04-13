@@ -65,3 +65,31 @@ export const deleteRentalHouse = catchAsync(async (req: Request, res: Response) 
     data: result,
   });
 });
+
+export const getAllRentalRequests = catchAsync(async (req: Request, res: Response) => {
+  const landlordId = req?.user?.id;
+
+  const result = await RentalHouseService.getAllRentalRequestsForLandlord(landlordId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Rental requests retrieved successfully",
+    data: result,
+  });
+});
+
+// Respond to a rental request
+export const handleRentalRequestResponse = catchAsync(async (req: Request, res: Response) => {
+  const { requestId } = req.params;
+  const { status, phoneNumber } = req.body;
+
+  const result = await RentalHouseService.respondToRentalRequest(requestId, status, phoneNumber);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: `Rental request ${status} successfully`,
+    data: result,
+  });
+});

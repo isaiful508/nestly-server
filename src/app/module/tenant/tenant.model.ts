@@ -7,6 +7,7 @@ const tenantRequestSchema = new Schema<TTenantRequest>({
     message: { type: String, required: true },
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
     paymentStatus: { type: String, enum: ['pending', 'paid', 'failed'], default: 'pending' },
+    landlordPhone: { type: String }, 
 
 }, { timestamps: true });
 
