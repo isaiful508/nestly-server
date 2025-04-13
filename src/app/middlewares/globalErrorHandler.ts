@@ -6,6 +6,8 @@ import handleValidationError from "../errors/handleValidationError";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
 import AppError from "../errors/AppError";
+import handleZodError from "../errors/handleZodError";
+import { ZodError } from "zod";
 
 
 let errorSources: TErrorSource = [
@@ -25,7 +27,12 @@ const globalErrorHandler = (
   let statusCode = 500;
   let message = "Something Went wrong";
 
-   if (err?.name === "ValidationError") {
+  if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err);
+    errorSources = simplifiedError.errorSources;
+    message = simplifiedError.message;
+    statusCode = simplifiedError.statusCode
+  } else if (err?.name === "ValidationError") {
     const simplifiedError = handleValidationError(err);
     errorSources = simplifiedError.errorSources;
     message = simplifiedError.message;
