@@ -1,3 +1,4 @@
+import { RentalHouse } from "../LandLord/Listings/listing.model";
 import User from "../user/user.model";
 
 const getAllUsersFromDB = async () => {
@@ -15,8 +16,20 @@ const deleteUserFromDB = async (id: string) => {
     return user;
 }
 
+const getAllRentalHousesFromDB = async () => {
+    const houses = await RentalHouse.find();
+    return houses;
+}
+
+const deleteRentalHouseFromDB = async (id: string) => {
+    const house = await RentalHouse.findByIdAndDelete(id);
+    return house;
+}
+
 export const AdminServices = {
     getAllUsersFromDB,
     updateUserRoleInDB,
-    deleteUserFromDB
+    deleteUserFromDB,
+    getAllRentalHousesFromDB,
+    deleteRentalHouseFromDB
 }

@@ -9,12 +9,20 @@ router.get("/users",
     auth(USER_ROLE.ADMIN as TUserRole),
     AdminController.getAllUsers);
 
-router.put("/users/:id", 
+router.put("/user/:id", 
     auth(USER_ROLE.ADMIN as TUserRole),
     AdminController.updateUserRole);
 
-router.delete("/users/:id", 
+router.delete("/user/:id", 
     auth(USER_ROLE.ADMIN as TUserRole),
     AdminController.deleteUser);
+
+router.get("/listings", 
+    auth(USER_ROLE.ADMIN as TUserRole),
+    AdminController.getAllRentalHouses);
+
+router.delete("/listings/:id", 
+    auth(USER_ROLE.ADMIN as TUserRole),
+    AdminController.deleteRentalHouse);
 
 export const AdminRoutes = router;
