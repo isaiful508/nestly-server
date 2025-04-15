@@ -1,5 +1,5 @@
 
-import mongoose from "mongoose";
+
 import QueryBuilder from "../../../builder/QueryBuilder";
 import { IRentalHouse } from "./listing.interface";
 import { RentalHouse } from "./listing.model";
@@ -14,14 +14,9 @@ const createRentalHouseIntoDB = async (payload: IRentalHouse) => {
   return result;
 };
 
-const getAllRentalHousesFromDB = async (
-  query: Record<string, unknown>,
-  landlordId: string
-) => {
-    const landlordObjectId = new mongoose.Types.ObjectId(landlordId);
-
+const getAllRentalHousesFromDB = async (query: Record<string, unknown>) => {
   const rentalQuery = new QueryBuilder(
-    RentalHouse.find({ landlord: landlordObjectId }),
+    RentalHouse.find(),
     query
   )
     .search(RentalHouseSearchableFields)

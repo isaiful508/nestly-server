@@ -20,17 +20,12 @@ export const createRentalHouse = catchAsync(async (req: Request, res: Response) 
 
 // Get all rental houses for a landlord with query support
 export const getAllRentalHouses = catchAsync(async (req: Request, res: Response) => {
-  console.log("check......",req);
-   const landlordId = req?.user.id; 
   const query = req.query;
 
-  const result = await RentalHouseService.getAllRentalHousesFromDB(
-    query,
-     landlordId
-  );
+  const result = await RentalHouseService.getAllRentalHousesFromDB(query);
 
   sendResponse(res, {
-    statusCode:StatusCodes.OK,
+    statusCode: StatusCodes.OK,
     success: true,
     message: "Rental houses retrieved successfully",
     data: result,
