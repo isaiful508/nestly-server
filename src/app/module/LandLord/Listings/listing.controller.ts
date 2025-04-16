@@ -20,19 +20,35 @@ export const createRentalHouse = catchAsync(async (req: Request, res: Response) 
 
 // Get all rental houses for a landlord with query support
 export const getAllRentalHouses = catchAsync(async (req: Request, res: Response) => {
-  console.log("check......",req);
-   const landlordId = req?.user.id; 
   const query = req.query;
 
-  const result = await RentalHouseService.getAllRentalHousesFromDB(
-    query,
-     landlordId
-  );
+  const result = await RentalHouseService.getAllRentalHousesFromDB(query);
 
   sendResponse(res, {
-    statusCode:StatusCodes.OK,
+    statusCode: StatusCodes.OK,
     success: true,
     message: "Rental houses retrieved successfully",
+    data: result,
+  });
+});
+//Get rental houses by email
+export const getRentalHousesByEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+
+  if (!email ) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      success: false,
+      message: "Email is required and must be a string.",
+    });
+    return;
+  }
+
+  const result = await RentalHouseService.getRentalHousesByEmailService(email as string);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Rental houses fetched by email successfully",
     data: result,
   });
 });

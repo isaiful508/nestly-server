@@ -1,7 +1,7 @@
 import { Router } from "express";
 import validateRequest from "../../../middlewares/validateRequest";
 import { createRentalHouseValidationSchema, updateRentalHouseValidationSchema } from "./listing.validation";
-import { createRentalHouse, deleteRentalHouse, getAllRentalHouses, getAllRentalRequests, handleRentalRequestResponse, updateRentalHouse } from "./listing.controller";
+import { createRentalHouse, deleteRentalHouse, getAllRentalHouses, getAllRentalRequests, getRentalHousesByEmail, handleRentalRequestResponse, updateRentalHouse } from "./listing.controller";
 import auth from "../../../middlewares/auth";
 import { TUserRole, USER_ROLE } from "../../../types/global";
 
@@ -11,7 +11,8 @@ router.post("/listings",
     validateRequest(createRentalHouseValidationSchema),
     createRentalHouse,
 )
-router.get("/listings", auth(USER_ROLE.LANDLORD as TUserRole), getAllRentalHouses);
+router.get("/listings", getAllRentalHouses);
+router.get("/listings/:email", getRentalHousesByEmail);
 router.put('/listings/:id',
     auth(USER_ROLE.LANDLORD as TUserRole),
     validateRequest(updateRentalHouseValidationSchema),

@@ -1,5 +1,5 @@
 
-import mongoose from "mongoose";
+
 import QueryBuilder from "../../../builder/QueryBuilder";
 import { IRentalHouse } from "./listing.interface";
 import { RentalHouse } from "./listing.model";
@@ -14,14 +14,9 @@ const createRentalHouseIntoDB = async (payload: IRentalHouse) => {
   return result;
 };
 
-const getAllRentalHousesFromDB = async (
-  query: Record<string, unknown>,
-  landlordId: string
-) => {
-    const landlordObjectId = new mongoose.Types.ObjectId(landlordId);
-
+const getAllRentalHousesFromDB = async (query: Record<string, unknown>) => {
   const rentalQuery = new QueryBuilder(
-    RentalHouse.find({ landlord: landlordObjectId }),
+    RentalHouse.find(),
     query
   )
     .search(RentalHouseSearchableFields)
@@ -30,6 +25,17 @@ const getAllRentalHousesFromDB = async (
 
   const result = await rentalQuery.modelQuery.select('-__v').lean();
   return result;
+};
+//email er base e data get
+const getRentalHousesByEmailService = async (email: string) => {
+  const user = await User.findOne({ email }).select('_id');
+
+  if (!user) {
+    throw new Error("User with this email not found.");
+  }
+
+  const listings = await RentalHouse.find({ landlord: user._id }).select('-__v').lean();
+  return listings;
 };
 
 const updateRentalHouseIntoDB = async (
@@ -49,17 +55,17 @@ const deleteRentalHouseFromDB = async (id: string) => {
 };
 
 const getAllRentalRequestsForLandlord = async (landlordId: string) => {
-  // Step 1: Get all listings for this landlord
+  // Get all listings for this landlord
   const listings = await RentalHouse.find({ landlord: landlordId }).select('_id');
   const listingIds = listings.map((house) => house._id);
 
-  // Step 2: Get landlord's phone number from the User collection
+  //  Get landlord's phone number from the User collection
   const landlord = await User.findById(landlordId).select('phoneNumber').lean();
   if (!landlord || !landlord.phoneNumber) {
     throw new Error("Landlord's phone number not found.");
   }
 
-  // Step 3: Find rental requests related to the landlord
+  //  Find rental requests related to the landlord
   const requests = await TenantRequest.find({
     listing: { $in: listingIds },
     landlordPhone: landlord.phoneNumber,
@@ -94,4 +100,5 @@ export const RentalHouseService = {
   deleteRentalHouseFromDB,
   getAllRentalRequestsForLandlord,
   respondToRentalRequest,
+  getRentalHousesByEmailService
 };
