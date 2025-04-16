@@ -29,12 +29,12 @@ const getAllRentalHousesFromDB = async (query: Record<string, unknown>) => {
 //email er base e data get
 const getRentalHousesByEmailService = async (email: string) => {
   const user = await User.findOne({ email }).select('_id');
-
+ console.log("user....",user);
   if (!user) {
     throw new Error("User with this email not found.");
   }
-
-  const listings = await RentalHouse.find({ landlord: user._id }).select('-__v').lean();
+  const listings = await RentalHouse.find({ landlord: user._id.toString() }).select('-__v').lean();
+  console.log("listings....",listings);
   return listings;
 };
 
