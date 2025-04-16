@@ -6,11 +6,12 @@ import { RentalHouse } from "./listing.model";
 import { RentalHouseSearchableFields } from "./listing.constant";
 import TenantRequest from "../../tenant/tenant.model";
 import User from "../../user/user.model";
-// import User from "../../user/user.model";
+import { JwtPayload } from "jsonwebtoken";
 
 
-const createRentalHouseIntoDB = async (payload: IRentalHouse) => {
-  const result = await RentalHouse.create(payload);
+const createRentalHouseIntoDB = async (payload: IRentalHouse, user: JwtPayload) => {
+  console.log(user);
+  const result = await RentalHouse.create({ ...payload, landlord: user._id });
   return result;
 };
 
