@@ -31,6 +31,27 @@ export const getAllRentalHouses = catchAsync(async (req: Request, res: Response)
     data: result,
   });
 });
+//Get rental houses by email
+export const getRentalHousesByEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+
+  if (!email ) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      success: false,
+      message: "Email is required and must be a string.",
+    });
+    return;
+  }
+
+  const result = await RentalHouseService.getRentalHousesByEmailService(email as string);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Rental houses fetched by email successfully",
+    data: result,
+  });
+});
 
 // Update rental house
 export const updateRentalHouse = catchAsync(async (req: Request, res: Response) => {
