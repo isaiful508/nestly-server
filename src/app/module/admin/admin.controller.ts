@@ -34,8 +34,33 @@ const deleteUser = catchAsync(async (req, res) => {
     });
 });
 
+const getAllRentalHouses = catchAsync(async (req, res) => {
+    const houses = await AdminServices.getAllRentalHousesFromDB();
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Rental houses fetched successfully",
+        data: houses
+    });
+});
+
+const deleteRentalHouse = catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const house = await AdminServices.deleteRentalHouseFromDB(id);
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Rental house deleted successfully",
+        data: house
+    });
+});
+
+
+
 export const AdminController = {
     getAllUsers,
     updateUserRole,
-    deleteUser
+    deleteUser,
+    getAllRentalHouses,
+    deleteRentalHouse
 }

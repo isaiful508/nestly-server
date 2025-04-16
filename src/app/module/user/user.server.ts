@@ -7,7 +7,6 @@ const registerUserIntoDB = async (data: Partial<IUser>): Promise<IUser> => {
   // Generate a unique username
   const username = await generateUniqueUsername(name as string);
   const hashedPassword = await hashPassword(password!);
-  console.log({ username });
   const user = new User({
     name,
     username,
