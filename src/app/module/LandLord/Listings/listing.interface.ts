@@ -7,7 +7,8 @@ export interface IRentalHouse {
   description: string;
   rentAmount: number;
   bedrooms: number;
-  images: string[]; // Array of image URLs
+  images: string[]; 
+  status: "pending" | "approved" | "rejected";
   available: boolean;
   landlord: Types.ObjectId;
   createdAt?: Date;

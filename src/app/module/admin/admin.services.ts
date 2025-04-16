@@ -26,10 +26,28 @@ const deleteRentalHouseFromDB = async (id: string) => {
     return house;
 }
 
+const updateRentalHouseStatusInDB = async (id: string, status: string) => {
+    const allowedStatuses = ["approved", "rejected"];
+    if (!allowedStatuses.includes(status)) {
+        throw new Error("Invalid status value. Allowed values are: approved, rejected.");
+    }
+
+    const house = await RentalHouse.findByIdAndUpdate(
+        id,
+        { status },
+        { new: true }
+    );
+
+    return house;
+};
+
+
+
 export const AdminServices = {
     getAllUsersFromDB,
     updateUserRoleInDB,
     deleteUserFromDB,
     getAllRentalHousesFromDB,
-    deleteRentalHouseFromDB
+    deleteRentalHouseFromDB,
+    updateRentalHouseStatusInDB
 }

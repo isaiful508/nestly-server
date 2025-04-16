@@ -17,7 +17,7 @@ app.use(cors({
 
 
 // app.use('/api', UserRoutes);
-app.use('/',router)
+app.use('/api',router)
 
 app.get('/', (req: Request, res: Response) => {
   res.send({ message: 'Alhamdulilah Server is running....' });
