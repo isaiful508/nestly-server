@@ -10,6 +10,8 @@ export type IUser = {
   password: string;
   role: UserRole;
   isActive: boolean;
+  phone?: String,
+  profileImage?: String,
   createdAt?: Date;
   updatedAt?: Date;
 }
