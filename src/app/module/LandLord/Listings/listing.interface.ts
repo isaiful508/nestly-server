@@ -10,6 +10,7 @@ export interface IRentalHouse {
   images: string[]; // Array of image URLs
   available: boolean;
   landlord: Types.ObjectId;
+  amenities : string;
   createdAt?: Date;
   updatedAt?: Date;
 

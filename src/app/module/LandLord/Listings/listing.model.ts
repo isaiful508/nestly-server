@@ -28,7 +28,10 @@ export const rentalHouseSchema = new Schema<IRentalHouse>(
          type: [String],
          required: true
       },
-     
+     amenities:{
+      type:String,
+      required:true
+     },
       available: {
         type: Boolean,
         default: true,
