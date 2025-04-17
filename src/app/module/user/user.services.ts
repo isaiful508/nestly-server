@@ -39,40 +39,34 @@ export const loginUserFromDB = async (identifier: string, password: string) => {
   return user;
 };
 
-// const getAllUsers = async () => {
-//   const result = await User.find()
-//   return result
-// }
 
-// export const toggleUserStatus = async (userId: string, isActive: boolean) => {
-//   if (!Types.ObjectId.isValid(userId)) {
-//     throw new Error("Invalid user ID");
-//   }
+const updateProfileInDB = async (
+  id: string,
+  data: Partial<IUser> & { currentPassword?: string; newPassword?: string }
+) => {
+  const user = await User.findById(id);
+  console.log({user});
+  if (!user) throw new Error("User not found");
 
-//   const user = await User.findById(userId);
-//   if (!user) {
-//     throw {
-//       statusCode: StatusCodes.NOT_FOUND,
-//       message: "User not found",
-//       error: { details: "User ID did not match any records" },
-//     };
-//   }
+  if (data.currentPassword && data.newPassword) {
+    const isMatch = await comparePassword(data.currentPassword, user.password);
+    if (!isMatch) throw new Error("Current password is incorrect");
 
-//   user.isActive = isActive;
-//   await user.save();
-// };
+    user.password = await hashPassword(data.newPassword);
+  }
 
-// const updateUser = async (id: string, data: IUser) => {
-//   const result = await User.findByIdAndUpdate(id, data, {
-//     new: true, 
-//     runValidators: true,  // Ensures validation rules are applied
-//   });
+  if (data.username) user.username = data.username;
+  if (data.email) user.email = data.email;
+  if (data.phone) user.phone = data.phone;
+  if (data.profileImage) user.profileImage = data.profileImage;
 
-//   return result;
-// };
+  await user.save();
 
+  return user;
+};
 
 export const UserServices = {
   registerUserIntoDB,
-  loginUserFromDB
+  loginUserFromDB,
+  updateProfileInDB,
 }
