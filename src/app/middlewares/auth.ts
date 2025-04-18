@@ -42,25 +42,25 @@ const auth = (...requiredRoles: string[]) => {
       const token = req.headers.authorization;
 
       if (!token) {
-        throw new AppError(401, "You are not authorized.!!");
+        throw new AppError(401, "You are not authorized.");
       }
   
       let decode;
       try {
         decode = jwt.verify(token, config.jwt_secret as string) as JwtPayload;
       } catch (err) {
-        throw new AppError(401, "You are not authorized.decode");
+        throw new AppError(401, "You are not authorized.Update your token.");
       }
   
       const role = decode.role;
   
       if (!requiredRoles.includes(role)) {
-        throw new AppError(401, "You are not authorized. role");
+        throw new AppError(401, "You are not authorized.It is not your role.");
       }
   
       const user = await User.findOne({ _id: decode.id });
       if (!user) {
-        throw new AppError(401, "This user is not found!");
+        throw new AppError(401, "User is not found!");
       }
   
       req.user = decode;

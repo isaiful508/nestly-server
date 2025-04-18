@@ -53,7 +53,7 @@ export const loginUser = catchAsync(async (req, res) => {
     email : user.email,
     name : user.name,
     role: user.role,
-    phone : user.phoneNumber,
+    phoneNumber : user.phoneNumber,
   }, JWT_SECRET, { expiresIn: '24h' });
 
   sendResponse(res, {
@@ -65,7 +65,28 @@ export const loginUser = catchAsync(async (req, res) => {
 });
 
 
-const updateProfile = catchAsync(async (req, res) => {
+// const updateProfile = catchAsync(async (req, res) => {
+//   const userId = req.user.id;
+//   const { name, phoneNumber, profileImage, currentPassword, newPassword } = req.body;
+
+//   const updatedUser = await UserServices.updateProfileInDB(userId, {
+//     name,
+//     phoneNumber,
+//     profileImage,
+//     currentPassword,
+//     newPassword,
+//   });
+
+//   sendResponse(res, {
+//     success: true,
+//     statusCode: 200,
+//     message: "Profile updated successfully",
+//     data: updatedUser,
+//   });
+// });
+
+
+export const updateProfile = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { name, phoneNumber, profileImage, currentPassword, newPassword } = req.body;
 
@@ -77,14 +98,31 @@ const updateProfile = catchAsync(async (req, res) => {
     newPassword,
   });
 
+
+
+  const userPayload = updatedUser.toObject();
+  //@ts-ignore
+  delete userPayload.password;
+    //@ts-ignore
+  delete userPayload.__v;
+
+  const token = jwt.sign(
+    userPayload,
+    JWT_SECRET,
+    { expiresIn: "24h" }
+  );
+
+  console.log({updatedUser, token});
   sendResponse(res, {
-    success: true,
+    success:    true,
     statusCode: 200,
-    message: "Profile updated successfully",
-    data: updatedUser,
+    message:    "Profile updated successfully",
+    data: {
+      user:  updatedUser,
+      token, 
+    },
   });
 });
-
 
 
 export const UserControllers = {
