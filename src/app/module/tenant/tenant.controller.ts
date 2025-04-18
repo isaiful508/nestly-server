@@ -15,7 +15,6 @@ const tenantRequest = catchAsync(async (req, res) => {
 
 const getAllTenantRequest = catchAsync(async (req, res) => {
     const user = req.user;
-    console.log({user});
     const tenantRequest = await TenantServices.getAllTenantRequest(user);
     sendResponse(res, {
         success: true,

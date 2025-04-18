@@ -38,7 +38,6 @@ class QueryBuilder<T> {
       delete queryObj.filter;
     }
 
-    console.log('Filter Query:', queryObj); // Debugging
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
     return this;
   }

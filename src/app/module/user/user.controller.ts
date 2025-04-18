@@ -3,8 +3,7 @@ import config from '../../config';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import catchAsync from '../../utils/catchAsync';
-
-import { UserServices } from './user.server';
+import { UserServices } from './user.services';
 import { loginValidationSchema, registerValidationSchema } from './user.validation';
 import { sendResponse } from '../../utils/sendResponse';
 
@@ -54,7 +53,7 @@ export const loginUser = catchAsync(async (req, res) => {
     email : user.email,
     name : user.name,
     role: user.role,
-    phone : user.phoneNumber,
+    phoneNumber : user.phoneNumber,
   }, JWT_SECRET, { expiresIn: '24h' });
 
   sendResponse(res, {
@@ -66,81 +65,68 @@ export const loginUser = catchAsync(async (req, res) => {
 });
 
 
-// const getAllUsers = catchAsync(async (req, res) => {
-//   const result = await UserServices.getAllUsers()
+// const updateProfile = catchAsync(async (req, res) => {
+//   const userId = req.user.id;
+//   const { name, phoneNumber, profileImage, currentPassword, newPassword } = req.body;
 
-//   sendResponse(res, {
-//     statusCode: StatusCodes.OK,
-//     success: true,
-//     message: 'Users retrieved successfully',
-//     data: result,
+//   const updatedUser = await UserServices.updateProfileInDB(userId, {
+//     name,
+//     phoneNumber,
+//     profileImage,
+//     currentPassword,
+//     newPassword,
 //   });
-// })
-
-
-// export const toggleUserStatus = catchAsync(async (req, res) => {
-//   const { userId } = req.params;
-//   const { isActive } = req.body;
-
-//   await UserServices.toggleUserStatus(userId, isActive);
 
 //   sendResponse(res, {
-//     statusCode: StatusCodes.OK,
 //     success: true,
-//     message: `User ${isActive ? "activated" : "deactivated"} successfully`,
+//     statusCode: 200,
+//     message: "Profile updated successfully",
+//     data: updatedUser,
 //   });
 // });
 
 
+export const updateProfile = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const { name, phoneNumber, profileImage, currentPassword, newPassword } = req.body;
 
-// const updateUser = catchAsync(async (req, res) => {
-//   const userId = req.params.userId;
-//   const { oldPassword, password, ...updateFields } = req.body;
+  const updatedUser = await UserServices.updateProfileInDB(userId, {
+    name,
+    phoneNumber,
+    profileImage,
+    currentPassword,
+    newPassword,
+  });
 
-//   // const user = await User.findById(userId);
-//   // if (!user) {
-//   //   throw {
-//   //     statusCode: StatusCodes.NOT_FOUND,
-//   //     message: "User not found",
-//   //     error: { details: "No user exists with this ID" },
-//   //   };
-//   // }
 
-//   // If the request contains a new password, verify the old password first
-//   if (password) {
-//     if (!oldPassword) {
-//       throw {
-//         statusCode: StatusCodes.BAD_REQUEST,
-//         message: "Old password is required to update password",
-//       };
-//     }
 
-//     // Compare old password with stored hashed password
-//     const isMatch = await bcrypt.compare(oldPassword, user.password);
-//     if (!isMatch) {
-//       throw {
-//         statusCode: StatusCodes.UNAUTHORIZED,
-//         message: "Old password did not match",
-//       };
-//     }
+  const userPayload = updatedUser.toObject();
+  //@ts-ignore
+  delete userPayload.password;
+    //@ts-ignore
+  delete userPayload.__v;
 
-//     // Hash the new password before updating
-//     updateFields.password = await hashPassword(password);
-//   }
+  const token = jwt.sign(
+    userPayload,
+    JWT_SECRET,
+    { expiresIn: "24h" }
+  );
 
-//   // Update the user
-//   const result = await UserServices.updateUser(userId, updateFields);
-
-//   sendResponse(res, {
-//     statusCode: StatusCodes.OK,
-//     success: true,
-//     message: "User updated successfully",
-//     data: result,
-//   });
-// });
+  sendResponse(res, {
+    success:    true,
+    statusCode: 200,
+    message:    "Profile updated successfully",
+    data: {
+      user:  updatedUser,
+      token, 
+    },
+  });
+});
 
 
 export const UserControllers = {
   registerUser,
-  loginUser
+  loginUser,
+  updateProfile,
+
 };
