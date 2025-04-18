@@ -28,6 +28,11 @@ export const rentalHouseSchema = new Schema<IRentalHouse>(
          type: [String],
          required: true
       },
+      status: {
+        type: String,
+        enum: ["pending", "approved", "rejected"],
+        default: "pending",
+      },
      amenities:{
       type:String,
       required:true

@@ -25,4 +25,8 @@ router.delete("/listings/:id",
     auth(USER_ROLE.ADMIN as TUserRole),
     AdminController.deleteRentalHouse);
 
+    router.put("/listings/:id",
+        auth(USER_ROLE.ADMIN as TUserRole),
+         AdminController.updateRentalHouse);
+
 export const AdminRoutes = router;
