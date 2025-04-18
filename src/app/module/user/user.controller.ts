@@ -67,11 +67,10 @@ export const loginUser = catchAsync(async (req, res) => {
 
 const updateProfile = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const { username, email, phone, profileImage, currentPassword, newPassword } = req.body;
+  const { name, phone, profileImage, currentPassword, newPassword } = req.body;
 
   const updatedUser = await UserServices.updateProfileInDB(userId, {
-    username,
-    email,
+    name,
     phone,
     profileImage,
     currentPassword,
