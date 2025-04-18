@@ -20,7 +20,6 @@ const getAllRentalHousesFromDB = async (query: Record<string, unknown>) => {
     query
   )
     .search(RentalHouseSearchableFields)
-    .filter()
     .sort();
 
   const result = await rentalQuery.modelQuery.select('-__v').lean();
