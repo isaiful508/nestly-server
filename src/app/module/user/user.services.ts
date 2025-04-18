@@ -55,7 +55,7 @@ const updateProfileInDB = async (
   }
 
   if (data.name) user.name = data.name;
-  if (data.phone) user.phone = data.phone;
+  if (data.phoneNumber) user.phoneNumber = data.phoneNumber;
   if (data.profileImage) user.profileImage = data.profileImage;
 
   await user.save();
