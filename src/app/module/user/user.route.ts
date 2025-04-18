@@ -14,8 +14,12 @@ router.post(
     '/login',
     UserControllers.loginUser);
 
-    router.put("/update-profile", 
-         auth("LANDLORD", "TENANT", "ADMIN"),
-                UserControllers.updateProfile);
+    // router.put("/update-profile", 
+    //      auth("LANDLORD", "TENANT", "ADMIN"),
+    //             UserControllers.updateProfile);
+
+    const ALL_ROLES = Object.values(USER_ROLE);
+
+router.put("/update-profile", auth(...ALL_ROLES), UserControllers.updateProfile);
 
 export const UserRoutes = router;

@@ -36,35 +36,39 @@ import User from "../module/user/user.model";
 //     })
 // }
 
-const auth = (...requiredRoles: TUserRole[]) => {
+
+const auth = (...requiredRoles: string[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const token = req.headers.authorization;
-       
-        if (!token) {
-            throw new AppError(401, "You are not authorized.");
-        }
+      const token = req.headers.authorization;
 
-        let decode;
-        try {
-            decode = jwt.verify(token, config.jwt_secret as string) as JwtPayload;
-        } catch (err) {
-            throw new AppError(401, "You are not authorized.");
-        }
-        const role = decode.role;
-
-        const allowedRoles = requiredRoles.map(roleKey => USER_ROLE[roleKey]);
-
-        if (requiredRoles && !allowedRoles.includes(role)) {
-            throw new AppError(401, "You are not authorized.");
-        }
-
-        const user = await User.findOne({ _id: decode.id });
-        if (!user) {
-            throw new AppError(401, "This user is not found!");
-        }
-        req.user = decode;
-        next();
+      if (!token) {
+        throw new AppError(401, "You are not authorized.!!");
+      }
+  
+      let decode;
+      try {
+        decode = jwt.verify(token, config.jwt_secret as string) as JwtPayload;
+      } catch (err) {
+        throw new AppError(401, "You are not authorized.decode");
+      }
+  
+      const role = decode.role;
+  
+      if (!requiredRoles.includes(role)) {
+        throw new AppError(401, "You are not authorized. role");
+      }
+  
+      const user = await User.findOne({ _id: decode.id });
+      if (!user) {
+        throw new AppError(401, "This user is not found!");
+      }
+  
+      req.user = decode;
+      next();
     });
-}
+  };
+  
+  
+  
 
 export default auth;
