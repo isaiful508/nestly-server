@@ -8,7 +8,8 @@ import catchAsync from "../../../utils/catchAsync";
 // Create rental house
 export const createRentalHouse = catchAsync(async (req: Request, res: Response) => {
   const data = req.body;
-  const result = await RentalHouseService.createRentalHouseIntoDB(data);
+  const user = req.user;
+  const result = await RentalHouseService.createRentalHouseIntoDB(data, user);
 
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,

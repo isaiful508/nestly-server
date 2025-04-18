@@ -37,10 +37,14 @@ const userSchema = new Schema<IUser>(
       required: true,
       unique: true,
     },
+    profileImage: {
+      type: String,
+      default: "",
+    },
     isActive: {
       type: Boolean,
       default: true,
-    },  
+    },
   },
   {
     timestamps: true,
