@@ -1,7 +1,7 @@
 import express from 'express';
 import { UserControllers } from './user.controller';
 import auth from '../../middlewares/auth';
-import { TUserRole, USER_ROLE } from '../../types/global';
+import { USER_ROLE } from '../../types/global';
 
 
 

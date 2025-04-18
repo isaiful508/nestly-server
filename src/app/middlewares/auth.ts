@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
-import { TUserRole, USER_ROLE } from "../types/global";
 import catchAsync from "../utils/catchAsync";
 import AppError from "../errors/AppError";
 import jwt, { JwtPayload } from "jsonwebtoken";

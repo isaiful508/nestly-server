@@ -112,7 +112,6 @@ export const updateProfile = catchAsync(async (req, res) => {
     { expiresIn: "24h" }
   );
 
-  console.log({updatedUser, token});
   sendResponse(res, {
     success:    true,
     statusCode: 200,
