@@ -7,4 +7,7 @@ export type TTenantRequest = {
     status: 'pending' | 'approved' | 'rejected';
     paymentStatus: 'pending' | 'paid' | 'failed';
     landlordPhone?: string;
+    moveInDate: string;
+    rentalDuration: string;
+    
 };

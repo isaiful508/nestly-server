@@ -14,7 +14,7 @@ app.use(cors({
 }));
 
 
-app.use('/api', router);
+app.use('/', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send({ message: 'Alhamdulilah Server is running....' });
