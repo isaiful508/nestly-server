@@ -32,11 +32,26 @@ export const getAllRentalHouses = catchAsync(async (req: Request, res: Response)
     data: result,
   });
 });
+
+export const getSingleRentalHouse = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await RentalHouseService.getSingleRentalHouseFromDB(id);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Rental house retrieved successfully",
+    data: result,
+  });
+});
+
+
+
 //Get rental houses by email
 export const getRentalHousesByEmail = catchAsync(async (req: Request, res: Response) => {
   const { email } = req.params;
-
-  if (!email ) {
+  console.log(email);
+  if (!email) {
     res.status(StatusCodes.BAD_REQUEST).json({
       success: false,
       message: "Email is required and must be a string.",
@@ -85,7 +100,7 @@ export const deleteRentalHouse = catchAsync(async (req: Request, res: Response) 
 
 export const getAllRentalRequests = catchAsync(async (req: Request, res: Response) => {
   const landlordId = req?.user?.id;
-
+  console.log(landlordId);
   const result = await RentalHouseService.getAllRentalRequestsForLandlord(landlordId);
 
   sendResponse(res, {
