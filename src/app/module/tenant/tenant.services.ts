@@ -11,7 +11,6 @@ const createTenantRequest = async (payload: TTenantRequest, user: JwtPayload) =>
 }
 
 const getAllTenantRequest = async (user: JwtPayload) => {
-    console.log({user});
     const tenantRequest = await TenantRequest.find({    
         tenantId: user.id
     });
@@ -19,7 +18,6 @@ const getAllTenantRequest = async (user: JwtPayload) => {
 }
 
 const updateTenantProfile = async (payload: TTenantRequest, user: JwtPayload) => {
-    console.log({payload, user});
     const tenantRequest = await User.findByIdAndUpdate(user.id, payload, {new: true});
     return tenantRequest;
 }

@@ -45,7 +45,6 @@ const updateProfileInDB = async (
   data: Partial<IUser> & { currentPassword?: string; newPassword?: string }
 ) => {
   const user = await User.findById(id);
-  console.log({user});
   if (!user) throw new Error("User not found");
 
   if (data.currentPassword && data.newPassword) {
@@ -55,9 +54,8 @@ const updateProfileInDB = async (
     user.password = await hashPassword(data.newPassword);
   }
 
-  if (data.username) user.username = data.username;
-  if (data.email) user.email = data.email;
-  if (data.phone) user.phone = data.phone;
+  if (data.name) user.name = data.name;
+  if (data.phoneNumber) user.phoneNumber = data.phoneNumber;
   if (data.profileImage) user.profileImage = data.profileImage;
 
   await user.save();

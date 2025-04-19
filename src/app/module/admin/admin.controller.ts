@@ -55,6 +55,22 @@ const deleteRentalHouse = catchAsync(async (req, res) => {
     });
 });
 
+const updateRentalHouse = catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const { status } = req.body;
+
+    const updatedHouse = await AdminServices.updateRentalHouseStatusInDB(id, status);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: `Rental house status updated to ${status}`,
+        data: updatedHouse
+    });
+});
+
+
+
 
 
 export const AdminController = {
@@ -62,5 +78,6 @@ export const AdminController = {
     updateUserRole,
     deleteUser,
     getAllRentalHouses,
-    deleteRentalHouse
+    deleteRentalHouse,
+    updateRentalHouse
 }
