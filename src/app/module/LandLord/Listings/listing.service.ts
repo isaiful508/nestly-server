@@ -10,7 +10,7 @@ import { JwtPayload } from "jsonwebtoken";
 
 
 const createRentalHouseIntoDB = async (payload: IRentalHouse, user: JwtPayload) => {
-  const result = await RentalHouse.create({ ...payload, landlord: user._id });
+  const result = await RentalHouse.create({ ...payload, landlord: user.id });
   return result;
 };
 

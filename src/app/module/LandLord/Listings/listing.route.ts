@@ -1,14 +1,15 @@
 import { Router } from "express";
 import validateRequest from "../../../middlewares/validateRequest";
-import { createRentalHouseValidationSchema, updateRentalHouseValidationSchema } from "./listing.validation";
+import { updateRentalHouseValidationSchema } from "./listing.validation";
 import { createRentalHouse, deleteRentalHouse, getAllRentalHouses, getAllRentalRequests, getRentalHousesByEmail, handleRentalRequestResponse, updateRentalHouse } from "./listing.controller";
 import auth from "../../../middlewares/auth";
 import { TUserRole, USER_ROLE } from "../../../types/global";
 
 const router = Router();
+
 router.post("/listings",
     auth(USER_ROLE.LANDLORD as TUserRole),
-    validateRequest(createRentalHouseValidationSchema),
+    // dataValidator(createRentalHouseValidationSchema),
     createRentalHouse,
 )
 router.get("/listings", getAllRentalHouses);

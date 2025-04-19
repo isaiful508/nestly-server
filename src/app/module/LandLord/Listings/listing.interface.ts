@@ -5,12 +5,11 @@ export interface IRentalHouse {
   landlord: Types.ObjectId;
   location: string;
   description: string;
-  rentAmount: number;
-  bedrooms: number;
+  rentAmount: string;
+  bedrooms: string;
   images: string[]; 
   status: "pending" | "approved" | "rejected";
   available: boolean;
-  amenities : string;
   createdAt?: Date;
   updatedAt?: Date;
 
