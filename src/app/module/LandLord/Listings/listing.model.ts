@@ -16,6 +16,10 @@ export const rentalHouseSchema = new Schema<IRentalHouse>(
     bedrooms: {
       type: String, required: true, min: 1,
     },
+    amenities: {
+      type: [String],
+      required: true
+    },
     images: {
       type: [String],
       required: true

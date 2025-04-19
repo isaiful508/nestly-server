@@ -13,7 +13,7 @@ const createTenantRequest = async (payload: TTenantRequest, user: JwtPayload) =>
 const getAllTenantRequest = async (user: JwtPayload) => {
     const tenantRequest = await TenantRequest.find({    
         tenantId: user.id
-    });
+    }).populate("landlordId").populate("rentalHouseId");
     return tenantRequest;
 }
 

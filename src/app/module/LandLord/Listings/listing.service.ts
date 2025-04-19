@@ -26,9 +26,16 @@ const getAllRentalHousesFromDB = async (query: Record<string, unknown>) => {
   const result = await rentalQuery.modelQuery.select('-__v').lean();
   return result;
 };
+
+const getSingleRentalHouseFromDB = async (id: string) => {
+  const result = await RentalHouse.findById({ _id: id }).select('-__v').lean();
+  return result;
+};
+
 //email er base e data get
 const getRentalHousesByEmailService = async (email: string) => {
   const user = await User.findOne({ email }).select('_id');
+
   if (!user) {
     throw new Error("User with this email not found.");
   }
@@ -53,6 +60,7 @@ const deleteRentalHouseFromDB = async (id: string) => {
 };
 
 const getAllRentalRequestsForLandlord = async (landlordId: string) => {
+  
   // Get all listings for this landlord
   const listings = await RentalHouse.find({ landlord: landlordId }).select('_id');
   const listingIds = listings.map((house) => house._id);
@@ -98,5 +106,6 @@ export const RentalHouseService = {
   deleteRentalHouseFromDB,
   getAllRentalRequestsForLandlord,
   respondToRentalRequest,
-  getRentalHousesByEmailService
+  getRentalHousesByEmailService,
+  getSingleRentalHouseFromDB
 };

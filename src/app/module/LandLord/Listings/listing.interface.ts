@@ -7,6 +7,7 @@ export interface IRentalHouse {
   description: string;
   rentAmount: string;
   bedrooms: string;
+  amenities:string[];
   images: string[]; 
   status: "pending" | "approved" | "rejected";
   available: boolean;
