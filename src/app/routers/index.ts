@@ -4,6 +4,8 @@ import { ListingRoutes } from "../module/LandLord/Listings/listing.route";
 import { UserRoutes } from "../module/user/user.route";
 import { TenantRoutes } from "../module/tenant/tenant.route";
 import { AdminRoutes } from "../module/admin/admin.route";
+import { PaymentRoutes } from "../module/payment/payment.route";
+
 
 const router = Router();
 
@@ -27,6 +29,10 @@ const moduleRouters = [
         route: AdminRoutes,
     },
     
+    {
+        path: "/payment",
+        route: PaymentRoutes,
+    },
 
     
 ]
