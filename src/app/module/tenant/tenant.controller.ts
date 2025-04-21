@@ -35,8 +35,19 @@ const updateTenantProfile = catchAsync(async (req, res) => {
     });
 });
 
+const getSingleTenantRequest = catchAsync(async (req, res) => {
+    const tenantRequest = await TenantServices.getSingleTenantRequest(req.params.id);
+    sendResponse(res, {
+        success: true,
+        message: "Tenant request fetched successfully",
+        data: tenantRequest,
+        statusCode: 200
+    });
+});
+
 export const TenantController = {
     tenantRequest,
     getAllTenantRequest,
-    updateTenantProfile
+    updateTenantProfile,
+    getSingleTenantRequest
 }

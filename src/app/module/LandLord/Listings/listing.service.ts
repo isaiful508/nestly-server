@@ -60,42 +60,18 @@ const deleteRentalHouseFromDB = async (id: string) => {
 };
 
 const getAllRentalRequestsForLandlord = async (landlordId: string) => {
-  
-  // Get all listings for this landlord
-  const listings = await RentalHouse.find({ landlord: landlordId }).select('_id');
-  const listingIds = listings.map((house) => house._id);
-
-  //  Get landlord's phone number from the User collection
-  const landlord = await User.findById(landlordId).select('phoneNumber').lean();
-  if (!landlord || !landlord.phoneNumber) {
-    throw new Error("Landlord's phone number not found.");
-  }
-
-  //  Find rental requests related to the landlord
-  const requests = await TenantRequest.find({
-    listing: { $in: listingIds },
-    landlordPhone: landlord.phoneNumber,
-  }).lean();
-
-  return requests;
+  const result = await TenantRequest.find({ landlordId: landlordId }).populate('tenantId').select('-__v').lean();
+  return result;
 };
 
 const respondToRentalRequest = async (
   requestId: string,
-  status: 'approved' | 'rejected',
-  phoneNumber?: string
+  payload: {
+    action: "pending" | 'approved' | 'rejected',
+  }
 ) => {
-  const request = await TenantRequest.findById(requestId);
-  if (!request) {
-    throw new Error('Rental request not found');
-  }
-
-  request.status = status;
-  if (status === 'approved' && phoneNumber) {
-    request.landlordPhone = phoneNumber;
-  }
-
-  await request.save();
+  console.log(payload, "payload");
+  const request = await TenantRequest.findByIdAndUpdate(requestId, { status: payload.action }, { new: true });
   return request;
 };
 

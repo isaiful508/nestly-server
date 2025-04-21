@@ -18,4 +18,8 @@ router.put('/profile',
     auth(USER_ROLE.TENANT as TUserRole),
     TenantController.updateTenantProfile);
 
+router.get('/requests/:id',
+    auth(USER_ROLE.TENANT as TUserRole),
+    TenantController.getSingleTenantRequest);
+
 export const TenantRoutes = router;  

@@ -22,8 +22,14 @@ const updateTenantProfile = async (payload: TTenantRequest, user: JwtPayload) =>
     return tenantRequest;
 }
 
+const getSingleTenantRequest = async (id: string) => {
+    const tenantRequest = await TenantRequest.findById(id).populate("landlordId").populate("rentalHouseId").populate("tenantId");
+    return tenantRequest;
+}
+
 export const TenantServices = {
     createTenantRequest,
     getAllTenantRequest,
-    updateTenantProfile
+    updateTenantProfile,
+    getSingleTenantRequest
 }   
