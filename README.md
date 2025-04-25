@@ -54,7 +54,7 @@ Nestly backend is a secure and RESTful API server handling **authentication**, *
 ---
 
 ```bash
-git clone https://github.com/your-username/nestly.git
+git clone https://github.com/isaiful508/nestly-server.git
 cd nestly/server
 
 npm install
