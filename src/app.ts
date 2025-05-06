@@ -9,6 +9,8 @@ app.use(express.json());
 app.use(cors({
   origin: [
     "http://localhost:3000",
+    "https://nestly-client.vercel.app",
+    "https://nextly-client.vercel.app"
   ],
   credentials:true
 }));

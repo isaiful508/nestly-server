@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+//@ts-ignore
 import Stripe from "stripe";
 import Payment from "./payment.model";
 import config from "../../config";
@@ -30,7 +31,7 @@ const paymentIntent = async (paymentData: any) => {
 
     return paymentIntent.client_secret;
 }
-
+//@ts-ignore
 const confirmPayment = async (paymentData) => {
 
     const { transactionId } = paymentData;
